@@ -1,33 +1,75 @@
-// Імпортуємо модуль Express для створення сервера
-const express = require("express")
+const express = require('express')
+const path = require('path')
 
-// Імпортуємо модуль path для роботи з шляхами файлів
-const path = require("path")
+const HOST = 'localhost'
+const PORT = 8000
 
-// Створюємо об'єкт приложення Express
+const products = [
+    {
+        id: 1,
+        name: 'Mila',
+        img: 'https://sputnik.kz/img/1024/24/10242489_147:82:1498:1568_1920x0_80_0_0_149c713da4cffa1fb7bee655c2484b24.jpg',
+        description: 'For sale, cheap, 175 cm'
+    },
+    {
+        id: 2,
+        name: 'Yarik Tek',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Bundesarchiv_Bild_101I-299-1805-16,_Nordfrankreich,_Panzer_VI_%28Tiger_I%29_cropped.jpg',
+        description: 'For sale, expensive, 182 cm'
+    },
+    {
+        id: 3,
+        name: 'Nikita',
+        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZvViAs8p5cJ_SnrYg_yNrycXq1CGlXNDVlA&s',
+        description: 'Not for sale, priceless, one meter with a cap'
+    },
+]
+
 const app = express()
 
-// Визначаємо хост і порт для запуску сервера
-const HOST = "localhost"
-const PORT = 8000
-/* метод use подключает статические файлы,
-первым агрументом передается ссылка по которой будут доступны статические файлы,
-вторым агрументом используем метод експресса, который
-создаст get запросы для каждого файла в указанной папке  */
+// устанавливаем шаблонизатор с помощью которого будут рендериться шаблоны (при res.render)
+app.set("view engine", "ejs")
+
+// устанавливаем местонахождение шаблонов для шаблонизатора (вместо дефолтного views)
+app.set("views", path.resolve(__dirname, "./templates"))
+
+// Настраиваем раздачу статических файлов по пути /static/,
+// указывая директорию в которой лежат статик файлы (public)
 app.use("/static/", express.static(path.resolve(__dirname, "./public")))
 
-// Декларуємо маршрут для корневої сторінки
-app.get('/', (req, res) => {
-    // Надсилаємо файл index.html з папки templates
-    res.sendFile(path.resolve(__dirname, "./templates/index.html"))
-}) 
-// Пирописуємо шлях до сторінки  products
-app.get('/products/', (req, res) => {
-    // Отправляем файл products.html по пути 
-    // Папка относительно файлa server.js/templates/products.html
-    res.sendFile(path.resolve(__dirname, "./templates/products.html"))
+app.get("/", (req ,res) => {
+    res.render("index")
 })
-// Запускаємо сервер на заданому порті та хості
-app.listen(PORT,HOST,()=>{
-    console.log(`server is running on http://${HOST}:${PORT}`)
+app.get("/products", (req, res) => {
+    //создаем переменные и передаем данные с помощью context
+    const context = {
+        products:products,
+    }
+    //Рендерим шаблон а так же передаем данные для отображения
+    res.render("products", context)
+})
+app.get('/product/:id', (req, res) => {
+    // Создаем константу, которая хранит id и получает её из route params
+    const id = req.params.id
+    // выводим id
+    console.log(id)
+    // создаем константу context, в которой храним продукт который передаем в шаблон
+    const context = {
+        // получаем product из массива products используем id продукта
+        product:products[id-1],
+    }
+    // рендерим(отрисовываем) страничку с context
+    res.render('product', context)
+})
+
+// Route parameters
+// Query parameters
+
+// ejs - embedded javascript - встроенный JS
+// {% for user in users %}
+// <p>{{user.name}}</p>
+
+
+app.listen(PORT, HOST, () => {
+    console.log(`Listening on a port http://${HOST}:${PORT}`)
 })
