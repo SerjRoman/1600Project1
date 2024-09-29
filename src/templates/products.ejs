@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/products.js" defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -15,12 +16,13 @@
             <li>
                 <div>   
                     <h1><%= product.name %></h1>
-                    <img src="<%= product.img %>" >
+                    <img src="<%= product.img %>" width="200" height="200">
                     <p><%= product.description %></p>
                 </div>
             </li>
            
         <%})%>
     </ul>
+    <button id = "createProductButton">create product</button>
 </body>
 </html>

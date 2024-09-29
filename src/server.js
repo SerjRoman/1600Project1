@@ -27,6 +27,8 @@ const products = [
 
 const app = express()
 
+app.use(express.json())
+
 // устанавливаем шаблонизатор с помощью которого будут рендериться шаблоны (при res.render)
 app.set("view engine", "ejs")
 
@@ -41,13 +43,16 @@ app.get("/", (req ,res) => {
     res.render("index")
 })
 app.get("/products", (req, res) => {
+    // Query parameters
+    console.log(req.query)
     //создаем переменные и передаем данные с помощью context
     const context = {
-        products:products,
+        products:products.slice(0, req.query.max)
     }
     //Рендерим шаблон а так же передаем данные для отображения
     res.render("products", context)
 })
+// Route parameters
 app.get('/product/:id', (req, res) => {
     // Создаем константу, которая хранит id и получает её из route params
     const id = req.params.id
@@ -62,8 +67,17 @@ app.get('/product/:id', (req, res) => {
     res.render('product', context)
 })
 
-// Route parameters
-// Query parameters
+// обрабатываем пост запрос
+app.post("/product/create", (req,res)=>{
+    // выводим в консоль тело запроса
+    console.log(req.body);
+    // создаем константу с телом запроса
+    const product = req.body
+    // добавление нового элемента в список
+    products.push({name: product.name, img: product.img, description: product.description})
+    // отправляем ответ на запрос ввиде текста
+    res.send("hello post woda")
+})
 
 // ejs - embedded javascript - встроенный JS
 // {% for user in users %}
