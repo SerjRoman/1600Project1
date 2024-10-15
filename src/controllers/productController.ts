@@ -6,30 +6,30 @@
 за принятие запроса и отдачу ответа c данными ->
 за данные которые нужно отправить 
 */
+import express,{Express, Request, Response} from 'express'
+import productService from '../services/productService'
+// import productService from '../services/productService'
+// const productService = require('../services/productService')
 
-const productService = require('../services/productService')
-
-function getProductById (req, res) {
-    const id = req.params.id
-    console.log(id)
+function getProductById (req: Request, res : Response) {
+    const id = +req.params.id
     const context = productService.getProductById(id)
     res.render('product', context)
 }
-function getAllProducts (req, res) {
-    console.log(req.query)
-    const context = productService.getAllProducts(req.query.max)
+function getAllProducts (req: Request, res : Response) {
+    const context = productService.getAllProducts(req.query.max ? +req.query.max : undefined)
     res.render("products", context)
 }
 
-function createProduct(req,res) {
+function createProduct(req: Request, res : Response) {
     console.log(req.body);
     const product = req.body
     const msg = productService.createProduct(product)
     res.send(msg)
 }
-module.exports = {
+const productController= {
     getProductById: getProductById, 
     getAllProducts: getAllProducts,
     createProduct: createProduct 
 }
-
+export default productController

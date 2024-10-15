@@ -6,7 +6,11 @@
 // оно будет переиспользовать все ту же логику
 
 
-const products = [
+const products:{
+            id:Number,
+            name:string,
+            img:string,
+            description:string}[] = [
     {
         id: 1,
         name: 'Mila',
@@ -27,27 +31,33 @@ const products = [
     },
 ]
 
-function getProductById (id) {
+function getProductById (id:number) {
     console.log(id)
     const context = {
         product:products[id-1],
     }
     return context
 }
-function getAllProducts (max) {
+function getAllProducts (max?: number) {
+    if (!max) {
+        max = products.length
+    }
     const context = {
         products:products.slice(0, max)
     }
     return context
 }
 
-function createProduct(product) {;
+function createProduct(product:{id:Number,
+    name:string,
+    img:string,
+    description:string}) {;
     products.push(product)
     return "Hello woda"
 }
 
-module.exports = {
-    getProductById: getProductById, 
-    getAllProducts: getAllProducts,
-    createProduct: createProduct 
+export = {
+    getProductById, 
+    getAllProducts,
+    createProduct 
 }

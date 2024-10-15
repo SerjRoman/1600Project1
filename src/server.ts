@@ -1,7 +1,9 @@
-const express = require('express')
-const path = require('path')
+// const express = require('express')
+// const path = require('path')
+import express, { Express, Request, Response } from "express";
+import path from "path";
 
-const productRouter = require("./routers/productRouter")
+import productRouter from "./routers/productRouter"
 
 const HOST = 'localhost'
 const PORT = 8000
@@ -22,7 +24,7 @@ app.use("/static/", express.static(path.resolve(__dirname, "./public")))
 
 app.use("/product/", productRouter)
 
-app.get("/", (req ,res) => {
+app.get("/", (req: Request ,res: Response) => {
     res.render("index")
 })
 // ejs - embedded javascript - встроенный JS
