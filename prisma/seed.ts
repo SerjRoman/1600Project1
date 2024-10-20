@@ -30,6 +30,7 @@ async function getOneCategory() {
     })
     console.log(category)
 }
+
 async function getOneCategoryWithProducts() {
     const category = await prisma.category.findUnique({
         where: {

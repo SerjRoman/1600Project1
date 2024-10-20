@@ -5,6 +5,9 @@
 // Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
 // оно будет переиспользовать все ту же логику
 
+import productRepository from "./productRepository"
+
+
 
 const products:{
             id:Number,
@@ -38,12 +41,12 @@ function getProductById (id:number) {
     }
     return context
 }
-function getAllProducts (max?: number) {
-    if (!max) {
-        max = products.length
-    }
+async function getAllProducts (max?: number) {
+    // if (!max) {
+    //     max = products.length
+    // }
     const context = {
-        products:products.slice(0, max)
+        products: await productRepository.getAllProducts()
     }
     return context
 }

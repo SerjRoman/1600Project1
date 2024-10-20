@@ -7,7 +7,7 @@
 за данные которые нужно отправить 
 */
 import express,{Express, Request, Response} from 'express'
-import productService from '../services/productService'
+import productService from './productService'
 // import productService from '../services/productService'
 // const productService = require('../services/productService')
 
@@ -16,8 +16,8 @@ function getProductById (req: Request, res : Response) {
     const context = productService.getProductById(id)
     res.render('product', context)
 }
-function getAllProducts (req: Request, res : Response) {
-    const context = productService.getAllProducts(req.query.max ? +req.query.max : undefined)
+async function getAllProducts (req: Request, res : Response) {
+    const context = await productService.getAllProducts(req.query.max ? +req.query.max : undefined)
     res.render("products", context)
 }
 

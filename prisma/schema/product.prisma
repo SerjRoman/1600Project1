@@ -1,7 +1,7 @@
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
-  description String
+  description String?
   img         String
   Category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
