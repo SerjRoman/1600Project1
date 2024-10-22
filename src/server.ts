@@ -2,8 +2,12 @@
 // const path = require('path')
 import express, { Express, Request, Response } from "express";
 import path from "path";
+import cookieParser from "cookie-parser";
 
-import productRouter from "./routers/productRouter"
+import productRouter from "./ProductApp/productRouter"
+import userRouter from "./UserApp/userRouter";
+
+const SECRET_KEY = "vovsemvinovataluda" // перенести в .env файл !!!
 
 const HOST = 'localhost'
 const PORT = 8000
@@ -11,6 +15,8 @@ const PORT = 8000
 const app = express()
 
 app.use(express.json())
+
+app.use(cookieParser())
 
 // устанавливаем шаблонизатор с помощью которого будут рендериться шаблоны (при res.render)
 app.set("view engine", "ejs")
@@ -23,6 +29,7 @@ app.set("views", path.resolve(__dirname, "./templates"))
 app.use("/static/", express.static(path.resolve(__dirname, "./public")))
 
 app.use("/product/", productRouter)
+app.use("/", userRouter)
 
 app.get("/", (req: Request ,res: Response) => {
     res.render("index")

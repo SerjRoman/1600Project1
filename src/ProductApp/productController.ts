@@ -12,6 +12,7 @@ import productService from './productService'
 // const productService = require('../services/productService')
 
 function getProductById (req: Request, res : Response) {
+    
     const id = +req.params.id
     const context = productService.getProductById(id)
     res.render('product', context)
