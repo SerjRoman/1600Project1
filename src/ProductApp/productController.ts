@@ -33,4 +33,5 @@ const productController= {
     getAllProducts: getAllProducts,
     createProduct: createProduct 
 }
+
 export default productController

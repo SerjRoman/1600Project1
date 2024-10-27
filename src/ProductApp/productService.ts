@@ -51,7 +51,7 @@ async function getAllProducts (max?: number) {
     return context
 }
 
-function createProduct(product:{id:Number,
+function createProduct(product:{id:number,
     name:string,
     img:string,
     description:string}) {;

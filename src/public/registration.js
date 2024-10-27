@@ -1,11 +1,12 @@
-loginForm.addEventListener("submit", (event)=> {
+registrationForm.addEventListener("submit", (event)=> {
     event.preventDefault()
     fetch("", {
         method: "POST",
         body: JSON.stringify(
             {
-                email: inputLogin.value,
-                password: inputPassword.value
+                username: username.value,
+                email: email.value,
+                password: password.value
             }
         ),
         headers:{

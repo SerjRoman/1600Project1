@@ -7,7 +7,6 @@ import cookieParser from "cookie-parser";
 import productRouter from "./ProductApp/productRouter"
 import userRouter from "./UserApp/userRouter";
 
-const SECRET_KEY = "vovsemvinovataluda" // перенести в .env файл !!!
 
 const HOST = 'localhost'
 const PORT = 8000

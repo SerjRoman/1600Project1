@@ -11,16 +11,6 @@ async function createOneCategory() {
     })
 }
 
-async function createOneProduct(){
-    const product = await prisma.product.create({
-        data: {
-            name: 'Mila',
-            img: 'https://sputnik.kz/img/1024/24/10242489_147:82:1498:1568_1920x0_80_0_0_149c713da4cffa1fb7bee655c2484b24.jpg',
-            description: 'For sale, cheap, 175 cm',
-            categoryId: 2
-        }
-    })
-}
 
 async function getOneCategory() {
     const category = await prisma.category.findUnique({
@@ -29,6 +19,16 @@ async function getOneCategory() {
         }
     })
     console.log(category)
+}
+
+async function createUser() {
+    const user = await prisma.user.create({
+        data : {
+        username: "Yaroslav VELLIKIY",
+        email : "example@gmail.com",
+        password : "12345"
+        }
+    })
 }
 
 async function getOneCategoryWithProducts() {
@@ -43,7 +43,7 @@ async function getOneCategoryWithProducts() {
     console.log(category)
 }
 
-getOneCategory().then(() => {
+createUser().then(() => {
     prisma.$disconnect()
 }).catch((error) => {
     console.log(error)

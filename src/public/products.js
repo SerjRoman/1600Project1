@@ -11,7 +11,7 @@ createButton.addEventListener("click", ()=>{
         body: JSON.stringify(
             {
                 name:"Taisia", 
-                img:"https://images.techinsider.ru/upload/img_cache/b29/b29f7d7a54456f0e1f3008c1a56c05d9_cropped_666x445.jpg",
+                img:"https://static.ukrinform.com/photos/2013_06/1371661320_2.jpg",
                 description:"sell skolkototam cena"
             }
         ),

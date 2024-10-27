@@ -3,6 +3,8 @@ JWT - JSON Web Token - Это JSON обьект который хранит да
                        подписывает их специальным секретным ключом.
 Для JWT токена обязательно иметь данные для шифровки (payload) и подпись/ключ (signature)
 
+npm i jsonwebtoken @types/jsonwebtoken
+
 {token:"seiuwbegiu"} 
 
 Для записи cookie на стороне сервера клиенту у обьекта res используется метод cookie,
