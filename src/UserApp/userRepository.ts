@@ -2,14 +2,14 @@ import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 
 
-async function findUserEmail(email: string){
+async function findUserByEmail(email: string){
     try {
         const user = await client.user.findUnique({
             where: {
                 email: email
             }
         })
-        return user    
+        return user
     }catch (err){
         if (err instanceof Prisma.PrismaClientKnownRequestError){
             if (err.code === "P2002"){
@@ -45,7 +45,7 @@ async function createUser(data: Prisma.UserCreateInput){
 
 
 const userRepository = {
-    findUserEmail, 
+    findUserByEmail, 
     createUser 
 }
 

@@ -3,6 +3,12 @@ import userService from "./userService"
 import { sign } from "jsonwebtoken"
 import { SECRET_KEY } from "../config/token"
 
+interface IUserData{
+    username: string,
+    email: string,
+    password: string
+}
+
 function loginUser(req:Request,res:Response){
     res.render("login")
 }
@@ -24,9 +30,16 @@ function registerUser(req:Request, res:Response){
     res.render("registration")
 }
 
-function authRegisterUser(req:Request, res:Response){
-    const data = req.body
-    res.sendStatus(200)
+async function authRegisterUser(req:Request, res:Response){
+    const data = req.body as IUserData 
+    const register = await userService.authRegistration(data)
+    if (register.status == "error"){
+        res.send(register.message)
+    } else if (register.status == "ok"){
+        const token = sign(register.user, SECRET_KEY, {expiresIn : "1h"})
+        res.cookie("token", token)
+        res.sendStatus(200)
+    }
 }
 
 const userController={

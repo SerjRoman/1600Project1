@@ -19,6 +19,7 @@ function getProductById (req: Request, res : Response) {
 }
 async function getAllProducts (req: Request, res : Response) {
     const context = await productService.getAllProducts(req.query.max ? +req.query.max : undefined)
+    console.log(res.locals.user)
     res.render("products", context)
 }
 
