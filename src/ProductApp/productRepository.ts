@@ -18,12 +18,12 @@ async function getAllProducts(max?: number){
     try {
         const products = await client.product.findMany()
         return products
-    }catch (err){
+    } catch (err){
         if (err instanceof Prisma.PrismaClientKnownRequestError){
             if (err.code === "P2002"){
                 console.log(err.message)
                 throw err
-            }else if ( err.code === "P2003"){
+            } else if ( err.code === "P2003"){
 
             }
         }
@@ -32,15 +32,9 @@ async function getAllProducts(max?: number){
 
 
 
-async function createProduct(data: Prisma.ProductCreateInput){
-    const products = await client.product.create({
-        data: data
-    })
-    return products
+async function createProduct(data: Prisma.ProductUncheckedCreateInput){
+    return await client.product.create({ data })
 } 
-
-
-
 
 
 const productRepository = {
