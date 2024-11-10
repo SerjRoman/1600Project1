@@ -56,7 +56,7 @@ function getProductById (id:number) {
     }
     return context
 }
-async function getAllProducts (max?: number) {
+async function getAllProducts (max?: number, category?: string) {
     // if (!max) {
     //     max = products.length
     // }
@@ -66,16 +66,35 @@ async function getAllProducts (max?: number) {
     return context
 }
 
-function createProduct(product:{id:number,
-    name:string,
-    img:string,
-    description:string}) {;
-    products.push(product)
+function createProduct(product:{ id:number,
+    name: string,
+    img: string,
+    description: string,
+    categoryId: number,
+    userId: number
+}) {;
+    productRepository.createProduct(product)
     return "Hello woda"
 }
+
+// async function getAllCategories (max?: number, category?: string) {
+//     const context = {
+//         categories: await productRepository.getAllCategories()
+//     }
+//     return context
+// }
+
+// async function createCategory (category:{ id:number,
+//     name: string,
+//     description: string,
+//     img: string
+// }) {
+    
+// }
 
 export = {
     getProductById, 
     getAllProducts,
-    createProduct 
+    createProduct,
+    // getAllCategories,
 }

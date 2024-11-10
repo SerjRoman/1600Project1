@@ -6,13 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- Заголовок  -->
-    <h1>products list: </h1>
-    <!-- список -->
+    <h1>Products list <% if (category) { %>
+      By category <%= category %>
+    <% } %></h1>
     <ul>
-        <!-- испольхуем метод forEach который перебирает каждый елемент списка -->
         <% products.forEach((product) => {%>
-            <!-- выводим переменную в html испоьзуя ejs код  -->
             <li>
                 <div>   
                     <h1><%= product.name %></h1>

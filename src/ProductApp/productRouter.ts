@@ -10,8 +10,11 @@ router.use(authMiddleware)
 // Запрос от клиента -> middleware,  -> handler(next)
 
 router.get("/all", productControllers.getAllProducts)
-router.post("/create", productControllers.createProduct)
+router.post("/create", productControllers.createProductPost)
 router.get("/:id", productControllers.getProductById)
+router.get("/create", productControllers.createProduct)
+// router.get("/create", productControllers.createCategory)
+// router.get("/all", productControllers.getAllCategories)
 
 
 export default router
