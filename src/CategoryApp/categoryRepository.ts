@@ -77,7 +77,7 @@ async function getAllCategories(){
     }
 }}
 
-async function getAllCategoriesWithProducts(id: number){
+async function getCategoryWithProducts(id: number){
     try {
         const category= await client.category.findUnique({
             where : {
@@ -112,7 +112,7 @@ const categoryRepository = {
     createCategory, 
     getCategoryById,
     getAllCategories,
-    getAllCategoriesWithProducts
+    getCategoryWithProducts
 }
 
 export default categoryRepository
