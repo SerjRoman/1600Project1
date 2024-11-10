@@ -14,11 +14,10 @@ async function getProductById(id: number){
 
 
 
-async function getAllProducts(max?: number){
+async function getAllProducts(max?: number, category?: string) {
     try {
-        const products = await client.product.findMany()
-        return products
-    } catch (err){
+        return await client.product.findMany({ take: max, where: { Category: { name: category } } })
+    } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
             if (err.code === "P2002"){
                 console.log(err.message)

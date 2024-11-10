@@ -36,26 +36,11 @@ function createProduct(req: Request, res : Response) {
     res.render("create-product")
 }
 
-// async function getAllCategories (req: Request, res : Response) {
-//     const max = req.query.max ? +req.query.max : undefined
-//     // const context = await productService.getAllCategories(max, category)
-    
-//     res.render("categories", context)
-// }
-
-// async function createCategory(req: Request, res : Response) {
-//     const category = req.body.category
-//     // const msg = productService.createCategory(category)
-//     res.send(msg)
-// }
-
 const productController= {
     getProductById, 
     getAllProducts,
     createProductPost, 
     createProduct,
-    // createCategory,
-    // getAllCategories
 }
 
 export default productController
