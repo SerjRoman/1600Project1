@@ -1,23 +1,60 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 
-
 async function createCategory(data: Prisma.CategoryCreateInput){
-    const category = await client.category.create({
-        data: data
-    })
-    return category
-}
+    
+    try {
+        const category = await client.category.create({
+            data: data
+        })
+        return category
+    } catch(err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError){
+            if (err.code === "P2002"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2003"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2007"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2014"){
+                console.log(err.message)
+                throw err
+            }
+    }
+    
+}}
+    
+
 
 async function getCategoryById(id: number){
-    const category= await client.category.findUnique({
-        where : {
-            id : id
+    try {
+        const category = await client.category.findUnique({
+            where : {
+                id : id
+            }
+        })
+        return category
+    } catch(err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError){
+            if (err.code === "P2002"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2003"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2007"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2014"){
+                console.log(err.message)
+                throw err
+            }
         }
-    })
-    return category
+    }
 }
-
 async function getAllCategories(){
     try {
         const categories = await client.category.findMany()
@@ -41,16 +78,33 @@ async function getAllCategories(){
 }}
 
 async function getAllCategoriesWithProducts(id: number){
-    const category= await client.category.findUnique({
-        where : {
-            id : id
-        },
-        include: {
-            products: true
-        }
-    })
-    return category
-}
+    try {
+        const category= await client.category.findUnique({
+            where : {
+                id : id
+            },
+            include: {
+                products: true
+            }
+        })
+        return category
+    } catch(err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError){
+            if (err.code === "P2002"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2003"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2007"){
+                console.log(err.message)
+                throw err
+            } else if ( err.code === "P2014"){
+                console.log(err.message)
+                throw err
+            }
+    }
+}}
 
 
 
