@@ -15,6 +15,7 @@ async function getCategoryById(id: number){
             id : id
         }
     })
+    return category
 }
 
 async function getAllCategories(){
@@ -48,6 +49,7 @@ async function getAllCategoriesWithProducts(id: number){
             products: true
         }
     })
+    return category
 }
 
 
