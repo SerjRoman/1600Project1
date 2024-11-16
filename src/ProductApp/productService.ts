@@ -1,34 +1,28 @@
-// В сервисе хранится логика работы которую хендлер просто вызывает и возвращает результат по http
-// Например в сервисе может определяться логика (набор действий) которая произойдет при добавлении поста
-// К примеру это может быть сохранение в бд после которого идет оповещение всех пользователей по email
-// и вместо того что бы писать подобную логику в обработчике, ее следует писать именно в так называемый слой бизнес логики (наш сервис)
-// Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
-// оно будет переиспользовать все ту же логику
+import productRepository from "./productRepository";
 
-import productRepository from "./productRepository"
-
-interface Product{
-    id: string
-    name:string
-    img:string
-    description:string
-}
-interface IProductOk{
-    status: "ok",
-    product: Product
-    
+interface Product {
+    id: string;
+    name: string;
+    img: string;
+    description: string;
 }
 
-interface IProductError{
-    status:"error",
-    message: string
+interface IProductOk {
+    status: "ok";
+    product: Product;
 }
 
-const products:{
-            id:Number,
-            name:string,
-            img:string,
-            description:string}[] = [
+interface IProductError {
+    status: "error";
+    message: string;
+}
+
+const products: {
+    id: number;
+    name: string;
+    img: string;
+    description: string;
+}[] = [
     {
         id: 1,
         name: 'Mila',
@@ -47,54 +41,35 @@ const products:{
         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZvViAs8p5cJ_SnrYg_yNrycXq1CGlXNDVlA&s',
         description: 'Not for sale, priceless, one meter with a cap'
     },
-]
+];
 
-function getProductById (id:number) {
-    console.log(id)
-    const context = {
-        product:products[id-1],
+async function getProductById(id: number): Promise<IProductOk | IProductError> {
+    try {
+        const product = await productRepository.getProductById(id);
+        if (!product) {
+            return { status: "error", message: "Product not found" };
+        }
+        return { status: "ok", product: product };
+    } catch (error) {
+        return { status: "error", message: error.message };
     }
-    return context
 }
-async function getAllProducts (max?: number, category?: string) {
-    // if (!max) {
-    //     max = products.length
-    // }
-    const context = {
-        products: await productRepository.getAllProducts()
+
+async function getAllProducts(max?: number, category?: string): Promise<IProductOk | IProductError> {
+    try {
+        const products = await productRepository.getAllProducts(max, category);
+        if (!products) {
+            return { status: "error", message: "No products found" };
+        }
+        return { status: "ok", product: products };
+    } catch (error) {
+        return { status: "error", message: error.message };
     }
-    return context
 }
 
-function createProduct(product:{ id:number,
-    name: string,
-    img: string,
-    description: string,
-    categoryId: number,
-    userId: number
-}) {;
-    productRepository.createProduct(product)
-    return "Hello woda"
-}
-
-// async function getAllCategories (max?: number, category?: string) {
-//     const context = {
-//         categories: await productRepository.getAllCategories()
-//     }
-//     return context
-// }
-
-// async function createCategory (category:{ id:number,
-//     name: string,
-//     description: string,
-//     img: string
-// }) {
-    
-// }
-
-export = {
-    getProductById, 
+const productService = {
+    getProductById,
     getAllProducts,
-    createProduct,
-    // getAllCategories,
-}
+};
+
+export default productService;
