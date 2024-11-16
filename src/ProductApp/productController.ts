@@ -1,46 +1,48 @@
-// app -> router -> controller -> service 
+import express, { Express, Request, Response } from 'express';
+import productService from './productService';
 
-/* 
-Приложение ->
-указывание ссылок ->
-за принятие запроса и отдачу ответа c данными ->
-за данные которые нужно отправить 
-*/
-import express,{Express, Request, Response} from 'express'
-import productService from './productService'
-// import productService from '../services/productService'
-// const productService = require('../services/productService')
-
-function getProductById (req: Request, res : Response) {
-    
-    const id = +req.params.id
-    const context = productService.getProductById(id)
-    res.render('product', context)
-}
-async function getAllProducts (req: Request, res : Response) {
-    const max = req.query.max ? +req.query.max : undefined
-    const category = String(req.query.category) || undefined
-    const context = await productService.getAllProducts(max, category)
-    console.log(res.locals.user)
-    res.render("products", context)
+async function getProductById(req: Request, res: Response) {
+    try {
+        const id = +req.params.id;
+        const context = await productService.getProductById(id);
+        res.render('product', context);
+    } catch (error) {
+        res.status(500).send({ error: 'Failed to get product' });
+    }
 }
 
-function createProductPost(req: Request, res : Response) {
-    console.log(req.body);
-    const product = req.body
-    const msg = productService.createProduct(product)
-    res.send(msg)
+async function getAllProducts(req: Request, res: Response) {
+    try {
+        const max = req.query.max ? +req.query.max : undefined;
+        const category = String(req.query.category) || undefined;
+        const context = await productService.getAllProducts(max, category);
+        console.log(res.locals.user);
+        res.render("products", context);
+    } catch (error) {
+        res.status(500).send({ error: 'Failed to get products' });
+    }
 }
 
-function createProduct(req: Request, res : Response) {
-    res.render("create-product")
+async function createProductPost(req: Request, res: Response) {
+    try {
+        console.log(req.body);
+        const product = req.body;
+        const msg = await productService.createProduct(product);
+        res.send(msg);
+    } catch (error) {
+        res.status(500).send({ error: 'Failed to create product' });
+    }
 }
 
-const productController= {
-    getProductById, 
+function createProduct(req: Request, res: Response) {
+    res.render("create-product");
+}
+
+const productController = {
+    getProductById,
     getAllProducts,
-    createProductPost, 
+    createProductPost,
     createProduct,
-}
+};
 
-export default productController
+export default productController;
