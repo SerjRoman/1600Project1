@@ -5,92 +5,56 @@
 // Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
 // оно будет переиспользовать все ту же логику
 
+import { IError, IOk } from "../types/types"
 import productRepository from "./productRepository"
+import { CreateProduct, IProductOk, IProductsOk } from "./types"
 
-interface Product{
-    id: string
-    name:string
-    img:string
-    description:string
-}
-interface IProductOk{
-    status: "ok",
-    product: Product
-    
-}
 
-interface IProductError{
-    status:"error",
-    message: string
-}
-
-const products:{
-            id:Number,
-            name:string,
-            img:string,
-            description:string}[] = [
-    {
-        id: 1,
-        name: 'Mila',
-        img: 'https://sputnik.kz/img/1024/24/10242489_147:82:1498:1568_1920x0_80_0_0_149c713da4cffa1fb7bee655c2484b24.jpg',
-        description: 'For sale, cheap, 175 cm'
-    },
-    {
-        id: 2,
-        name: 'Yarik Tek',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Bundesarchiv_Bild_101I-299-1805-16,_Nordfrankreich,_Panzer_VI_%28Tiger_I%29_cropped.jpg',
-        description: 'For sale, expensive, 182 cm'
-    },
-    {
-        id: 3,
-        name: 'Nikita',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZvViAs8p5cJ_SnrYg_yNrycXq1CGlXNDVlA&s',
-        description: 'Not for sale, priceless, one meter with a cap'
-    },
-]
-
-function getProductById (id:number) {
-    console.log(id)
-    const context = {
-        product:products[id-1],
+async function getProductById(id:number): Promise<IProductOk | IError> {
+    const res = await productRepository.getProductById(id)
+    if (!res) {
+        return {
+            status : "error",
+            message : "Product is not found"
+        }
     }
-    return context
-}
-async function getAllProducts (max?: number, category?: string) {
-    // if (!max) {
-    //     max = products.length
-    // }
-    const context = {
-        products: await productRepository.getAllProducts()
+    // Скажите как его зовут type.. 
+    if (res instanceof String) {
+        return {status: "error", message: String(res)}
     }
-    return context
+    return {
+        status : "ok",
+        data : res
+    }
 }
 
-function createProduct(product:{ id:number,
-    name: string,
-    img: string,
-    description: string,
-    categoryId: number,
-    userId: number
-}) {;
-    productRepository.createProduct(product)
-    return "Hello woda"
+async function getAllProducts(): Promise<IProductsOk | IError>{
+    const products = await productRepository.getAllProducts()
+    if (!products) {
+        return {
+            status : "error",
+            message : "Occured error during getting all products"
+        }
+    }
+    return {
+        status : "ok",
+        data : products
+    }
 }
 
-// async function getAllCategories (max?: number, category?: string) {
-//     const context = {
-//         categories: await productRepository.getAllCategories()
-//     }
-//     return context
-// }
-
-// async function createCategory (category:{ id:number,
-//     name: string,
-//     description: string,
-//     img: string
-// }) {
-    
-// }
+async function createProduct(product: CreateProduct): Promise<IOk | IError> {
+    const createdProduct = await productRepository.createProduct(product)
+    if (!createdProduct) {
+        return {
+            status : "error",
+            message : "Maybe created"
+        }
+    }
+    return {
+        status : "ok",
+        message : "Successfuly created product"
+    }
+}
 
 export = {
     getProductById, 

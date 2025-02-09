@@ -19,17 +19,14 @@ function getProductById (req: Request, res : Response) {
 }
 async function getAllProducts (req: Request, res : Response) {
     const max = req.query.max ? +req.query.max : undefined
-    const category = String(req.query.category) || undefined
-    const context = await productService.getAllProducts(max, category)
-    console.log(res.locals.user)
+    const context = await productService.getAllProducts()
     res.render("products", context)
 }
 
 function createProductPost(req: Request, res : Response) {
-    console.log(req.body);
     const product = req.body
-    const msg = productService.createProduct(product)
-    res.send(msg)
+    const message = productService.createProduct(product)
+    res.json({message})
 }
 
 function createProduct(req: Request, res : Response) {
