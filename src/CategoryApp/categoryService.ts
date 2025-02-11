@@ -1,42 +1,27 @@
 import categoryRepository  from "./categoryRepository"
+import { Prisma } from "@prisma/client"
+import { IError, IOk ,IOkWithData} from "../types/types"
+
+export type Category = Prisma.CategoryGetPayload<{}>
 
 
-interface Category{
-    id: number
-    name:string
-    img:string
-    description:string | null
-}
 
-interface ICategoryOk{
-    status: "ok",
-    category: Category[]
-}
 
-interface ICategoryError{
-    status:"error",
-    message: string
-}
 
-interface IOdinElement{
-    status: "ok",
-    category: Category
-}
-
-async function getAllCategories(): Promise<ICategoryOk | ICategoryError> {
+async function getAllCategories(): Promise<IOkWithData<Category[]> | IError> {
     const category = await categoryRepository.getAllCategories()
     if (!category){
         return{status: "error", message: "vsekapec"}
     }
-    return {status:"ok", category: category}
+    return {status:"ok", data: category}
 }
 
-async function getCategoryById(id:number): Promise<IOdinElement | ICategoryError> {
+async function getCategoryById(id:number): Promise<IOkWithData<Category{}> | IError> {
     const category = await categoryRepository.getCategoryById(id)
     if (!category){
         return{status: "error", message: "vsekapec"}
     }
-    return {status:"ok", category: category}
+    return {status:"ok", data: category}
     
 }
 
