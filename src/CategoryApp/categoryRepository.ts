@@ -1,4 +1,4 @@
-import { client } from "../client/prismaClient"
+import { client, getErrorMessage } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 
 async function createCategory(data: Prisma.CategoryCreateInput){
@@ -10,20 +10,12 @@ async function createCategory(data: Prisma.CategoryCreateInput){
         return category
     } catch(err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
-            }
-    }
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
+        }
+        console.log(err)
+        return "you don have enough power and motivation"
     
 }}
     
@@ -39,20 +31,12 @@ async function getCategoryById(id: number){
         return category
     } catch(err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
-            }
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
         }
+        console.log(err)
+        return "you don have enough power and motivation"
     }
 }
 async function getAllCategories(){
@@ -61,20 +45,12 @@ async function getAllCategories(){
         return categories
     } catch(err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
-            }
-    }
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
+        }
+        console.log(err)
+        return "you don have enough power and motivation"
 }}
 
 async function getCategoryWithProducts(id: number){
@@ -90,20 +66,12 @@ async function getCategoryWithProducts(id: number){
         return category
     } catch(err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
-            }
-    }
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
+        }
+        console.log(err)
+        return "you don have enough power and motivation"
 }}
 
 

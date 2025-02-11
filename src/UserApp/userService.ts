@@ -1,30 +1,12 @@
+import { IError, IOk, IOkWithData } from "../types/types"
+import { IUser, IUserCreate } from "./types"
 import userRepository from "./userRepository"
 
-interface IAuthOk{
-    status: "ok",
-    user: {
-        id: number,
-        username: string,
-        email: string,
-        password: string,
-    }
-}
-
-interface IAuthError{
-    status:"error",
-    message: string,
-}
-
-interface IUserData{
-    username: string,
-    email: string,
-    password: string
-}
 
 
 
 
-async function authLogin(password:string, email: string): Promise<IAuthOk | IAuthError> {
+async function authLogin(password:string, email: string): Promise<IOkWithData<IUser> | IError> {
     const user = await userRepository.findUserByEmail(email)
 
     if (!user) {
@@ -36,12 +18,12 @@ async function authLogin(password:string, email: string): Promise<IAuthOk | IAut
     
     console.log(user)
     console.log(typeof user)
-    return {status : "ok" , user: user}
+    return {status : "ok" , data: user}
 }
 
 // App -> Router -> Controller -> Service -> Repository
 
-async function authRegistration(userData: IUserData): Promise<IAuthOk | IAuthError> {
+async function authRegistration(userData: IUser): Promise<IOkWithData<IUser> | IError> {
     const user = await userRepository.findUserByEmail(userData.email)
 
     if (user){
@@ -53,8 +35,11 @@ async function authRegistration(userData: IUserData): Promise<IAuthOk | IAuthErr
     if (!newUser){
         return{ status:"error", message:"User wasn`t created successfully" }
     }
-    return{ status:"ok" , user: newUser}
-
+    if (typeof(newUser) === 'string'){
+        return {status: "error", message: newUser}
+    }
+    return{ status:"ok" , data: newUser}
+ 
 }
 
 const userService = {

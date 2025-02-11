@@ -1,4 +1,4 @@
-import { client } from "../client/prismaClient"
+import { client, getErrorMessage } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 
 
@@ -32,14 +32,12 @@ async function createUser(data: Prisma.UserCreateInput){
         return user
     }catch (err){
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            }else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            }
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
         }
+        console.log(err)
+        return "you don have enough power and motivation"
     }
 } 
 
