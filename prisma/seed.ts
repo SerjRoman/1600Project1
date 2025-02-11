@@ -3,13 +3,13 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 
-async function createOneCategory() {
-    const category = await prisma.category.create({
-        data: {
-            name: 'ЧеловеПетающие'
-        }
-    })
-}
+// async function createOneCategory() {
+//     const category = await prisma.category.create({
+//         data: {
+//             name: 'ЧеловеПетающие'
+//         }
+//     })
+// }
 
 
 async function getOneCategory() {

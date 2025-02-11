@@ -7,7 +7,7 @@
 
 import productRepository from "./productRepository"
 import { CreateProduct, Product} from "./types"
-import { IOkWithData ,IError, IOk} from "../types/types"
+import { IOkWithData, IError, IOk} from "../types/types"
 
 
 async function getProductById(id:number): Promise<IOkWithData<Product> | IError> {

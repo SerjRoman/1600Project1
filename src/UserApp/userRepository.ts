@@ -1,6 +1,7 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
-
+import { IError } from "../types/types"
+import { getErrorMessage } from "../tools/getErrorMessage"
 
 async function findUserByEmail(email: string){
     try {
@@ -10,17 +11,15 @@ async function findUserByEmail(email: string){
             }
         })
         return user
-    }catch (err){
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            }else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
+    }catch (err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError){
+                const errorMessage = getErrorMessage(err.code)
+                console.log(errorMessage)
+                return errorMessage
             }
+            console.log(err)
+            return "Unexpected error"
         }
-    }
 }
 
 
@@ -30,17 +29,15 @@ async function createUser(data: Prisma.UserCreateInput){
             data: data
         })
         return user
-    }catch (err){
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            }else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
+    }catch (err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError){
+                const errorMessage = getErrorMessage(err.code)
+                console.log(errorMessage)
+                return errorMessage
             }
+            console.log(err)
+            return "Unexpected error"
         }
-    }
 } 
 
 
