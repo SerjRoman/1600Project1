@@ -1,61 +1,49 @@
-import categoryRepository  from "./categoryRepository"
+import categoryRepository from "./categoryRepository"
+import { Category, CategoryCreate } from "./types"
+import { IOkWithData ,IError, IOk } from "../types/types"
 
-
-interface Category{
-    id: number
-    name:string
-    img:string
-    description:string | null
-}
-
-interface ICategoryOk{
-    status: "ok",
-    category: Category[]
-}
-
-interface ICategoryError{
-    status:"error",
-    message: string
-}
-
-interface IOdinElement{
-    status: "ok",
-    category: Category
-}
-
-async function getAllCategories(): Promise<ICategoryOk | ICategoryError> {
-    const category = await categoryRepository.getAllCategories()
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+async function getAllCategories(): Promise<IOkWithData<Category[]> | IError> {
+    const res = await categoryRepository.getAllCategories()
+    if (!res) {
+        return { status: "error", message: "ujas" }
     }
-    return {status:"ok", category: category}
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
+    return { status: "ok", data: res }
 }
 
-async function getCategoryById(id:number): Promise<IOdinElement | ICategoryError> {
-    const category = await categoryRepository.getCategoryById(id)
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+async function getCategoryById(id: number): Promise<IOkWithData<Category> | IError> {
+    const res = await categoryRepository.getCategoryById(id)
+    if (!res) {
+        return { status: "error", message: "ujas" }
     }
-    return {status:"ok", category: category}
-    
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
+    return { status: "ok", data: res }
 }
 
-async function createCategory(data: Category): Promise<IOdinElement | ICategoryError> {
-    const category = await categoryRepository.createCategory(data)
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+async function createCategory(data: CategoryCreate): Promise<IOk | IError> {
+    const res = await categoryRepository.createCategory(data)
+    if (!res) {
+        return { status: "error", message: "ujas" }
     }
-    return {status:"ok", category: category}
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
+    return { status: "ok", message: "category succesfully created" }
 }
 
-
-
-async function getCategoryWithProducts(id: number): Promise<IOdinElement | ICategoryError> {
-    const category = await categoryRepository.getCategoryWithProducts(id)
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+async function getCategoryWithProducts(id: number): Promise<IOkWithData<Category[]> | IError> {
+    const res = await categoryRepository.getCategoryWithProducts(id)
+    if (!res) {
+        return { status: "error", message: "vsekapec" }
     }
-    return {status:"ok", category: category}
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
+    return { status: "ok", data: res }
 }
 
 
