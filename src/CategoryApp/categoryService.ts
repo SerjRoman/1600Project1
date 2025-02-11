@@ -1,46 +1,53 @@
 import categoryRepository  from "./categoryRepository"
-import { Prisma } from "@prisma/client"
+
 import { IError, IOk ,IOkWithData} from "../types/types"
-
-export type Category = Prisma.CategoryGetPayload<{}>
-
-
-
 
 
 async function getAllCategories(): Promise<IOkWithData<Category[]> | IError> {
-    const category = await categoryRepository.getAllCategories()
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+    const res = await categoryRepository.getAllCategories()
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
     }
-    return {status:"ok", data: category}
+    return {status:"ok", data: res}
 }
+import { Category, CategoryWithProducts } from "./types"
 
-async function getCategoryById(id:number): Promise<IOkWithData<Category{}> | IError> {
-    const category = await categoryRepository.getCategoryById(id)
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+async function getCategoryById(id:number): Promise<IOkWithData<Category> | IError> {
+    const res = await categoryRepository.getCategoryById(id)
+    if (!res){
+        return{status: "error", message: "Category not found"}
     }
-    return {status:"ok", data: category}
+    if (typeof(res)  === "string") {
+        return {status: "error", message: res}
+    }
+    return {
+        status : "ok",
+        data: res
+    }
     
 }
 
-async function createCategory(data: Category): Promise<IOdinElement | ICategoryError> {
-    const category = await categoryRepository.createCategory(data)
-    if (!category){
-        return{status: "error", message: "vsekapec"}
+
+async function createCategory(data: Category): Promise<IOk | IError> {
+    const res = await categoryRepository.createCategory(data)
+
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
     }
-    return {status:"ok", category: category}
+    return {status:"ok", message:"Category created"}
 }
 
 
 
-async function getCategoryWithProducts(id: number): Promise<IOdinElement | ICategoryError> {
+async function getCategoryWithProducts(id: number): Promise<IOkWithData<CategoryWithProducts> | IError> {
     const category = await categoryRepository.getCategoryWithProducts(id)
     if (!category){
-        return{status: "error", message: "vsekapec"}
+        return{status: "error", message: "obojdetes`"}
     }
-    return {status:"ok", category: category}
+    if (typeof(category) === "string"){
+        return {status: "error", message: category}
+    }
+    return {status:"ok", data: category}
 }
 
 

@@ -1,7 +1,7 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
-import { IProductOk } from "./types"
-import { IError } from "../types/types"
+
+import { IError, IOk } from "../types/types"
 import { getErrorMessage } from "../tools/getErrorMessage"
 
 

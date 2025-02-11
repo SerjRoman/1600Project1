@@ -19,4 +19,7 @@ interface IUserData{
     password: string
 }
 
+import { Prisma } from "@prisma/client"
 
+export type User = Prisma.UserGetPayload<{}>
+export type UserProduct = Prisma.UserUncheckedCreateInput

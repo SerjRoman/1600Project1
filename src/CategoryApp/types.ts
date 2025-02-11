@@ -1,22 +1,10 @@
+import { Prisma } from "@prisma/client";
 
-interface Category{
-    id: number
-    name:string
-    img:string
-    description:string | null
-}
+export type Category = Prisma.CategoryGetPayload<{}>;
+export type CreateCategory = Prisma.CategoryUncheckedCreateInput;
 
-interface ICategoryOk{
-    status: "ok",
-    category: Category[]
-}
-
-interface ICategoryError{
-    status:"error",
-    message: string
-}
-
-interface IOdinElement{
-    status: "ok",
-    category: Category
-}
+export type CategoryWithProducts = Prisma.CategoryGetPayload<{
+    include: {
+        products: true;
+    };
+}>;

@@ -18,7 +18,7 @@ async function getProductById(id:number): Promise<IOkWithData<Product> | IError>
             message : "Product is not found"
         }
     }
-    // Скажите как его зовут type.. 
+
     if (typeof(res)  === "string") {
         return {status: "error", message: res}
     }
@@ -56,5 +56,4 @@ export = {
     getProductById, 
     getAllProducts,
     createProduct,
-    // getAllCategories,
 }

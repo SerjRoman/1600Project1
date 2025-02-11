@@ -8,8 +8,6 @@
 */
 import express, { Express, Request, Response } from "express";
 import productService from "./productService";
-// import productService from '../services/productService'
-// const productService = require('../services/productService')
 
 async function getProductById(req: Request, res: Response) {
 	const id = +req.params.id;
