@@ -19,8 +19,8 @@ async function getProductById(id:number): Promise<IProductOk | IError> {
         }
     }
     // Скажите как его зовут type.. 
-    if (res instanceof String) {
-        return {status: "error", message: String(res)}
+    if (typeof res === "string") {
+        return {status: "error", message: res}
     }
     return {
         status : "ok",
@@ -30,7 +30,7 @@ async function getProductById(id:number): Promise<IProductOk | IError> {
 
 async function getAllProducts(): Promise<IProductsOk | IError>{
     const products = await productRepository.getAllProducts()
-    if (!products) {
+    if (!products || typeof products === "string") {
         return {
             status : "error",
             message : "Occured error during getting all products"

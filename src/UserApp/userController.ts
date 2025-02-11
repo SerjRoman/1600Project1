@@ -2,12 +2,8 @@ import {Request,Response} from "express"
 import userService from "./userService"
 import { sign } from "jsonwebtoken"
 import { SECRET_KEY } from "../config/token"
+import { IUserData  } from "./utypes"
 
-interface IUserData{
-    username: string,
-    email: string,
-    password: string
-}
 
 function loginUser(req:Request,res:Response){
     res.render("login")

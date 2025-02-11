@@ -1,28 +1,34 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
+import { IUser } from "./utypes"
 
+function getErrorMessage(errorCode : string): string{
+    if (errorCode === "P2002"){
+        return "Given non unique value"
+    }else if (errorCode === "P2003"){
+        return 'Field is not found'
+    }
+    return "Error code is undefined " + errorCode
+}
 
-async function findUserByEmail(email: string){
+async function findUserByEmail(email: string) : Promise<IUser | string | null>{
     try {
         const user = await client.user.findUnique({
             where: {
                 email: email
             }
         })
-        return user
-    }catch (err){
+        return user || null
+    }catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            }else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            }
+            const errorMessage = getErrorMessage(err.code)
+            console.log(errorMessage)
+            return errorMessage
         }
+        console.log(err)
+        return "Unexpected error"
     }
 }
-
 
 async function createUser(data: Prisma.UserCreateInput){
     try {
@@ -30,18 +36,17 @@ async function createUser(data: Prisma.UserCreateInput){
             data: data
         })
         return user
-    }catch (err){
+    }catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            }else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            }
+            const errorMessage = getErrorMessage(err.code)
+            console.log(errorMessage)
+            return errorMessage
         }
+        console.log(err)
+        return "Unexpected error"
     }
-} 
+}
+
 
 
 const userRepository = {
