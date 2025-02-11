@@ -4,13 +4,13 @@ export type Product = Prisma.ProductGetPayload<{}>
 export type CreateProduct = Prisma.ProductUncheckedCreateInput
 
 
-export interface IProductOk{
+export interface IProductOk {
     status: "ok",
     data: Product
 }
-
-export interface IProductsOk{
+export interface IProductsOk {
     status: "ok",
     data: Product[]
 }
+
 

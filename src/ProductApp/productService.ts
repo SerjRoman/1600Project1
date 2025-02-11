@@ -5,59 +5,66 @@
 // Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
 // оно будет переиспользовать все ту же логику
 
+import { Product } from "@prisma/client"
 import { IError, IOk } from "../types/types"
 import productRepository from "./productRepository"
 import { CreateProduct, IProductOk, IProductsOk } from "./types"
 
 
-async function getProductById(id:number): Promise<IProductOk | IError> {
+async function getProductById(id: number): Promise<IProductOk | IError> {
     const res = await productRepository.getProductById(id)
     if (!res) {
         return {
-            status : "error",
-            message : "Product is not found"
+            status: "error",
+            message: "Product is not found"
         }
     }
-    // Скажите как его зовут type.. 
-    if (res instanceof String) {
-        return {status: "error", message: String(res)}
+    if (typeof res === "string") {
+        return { status: "error", message: res }
     }
     return {
-        status : "ok",
-        data : res
+        status: "ok",
+        data: res
     }
 }
 
-async function getAllProducts(): Promise<IProductsOk | IError>{
-    const products = await productRepository.getAllProducts()
-    if (!products) {
+async function getAllProducts(): Promise<IProductsOk | IError> {
+    const res = await productRepository.getAllProducts()
+    if (!res) {
         return {
-            status : "error",
-            message : "Occured error during getting all products"
+            status: "error",
+            message: "Occurred error during getting all products"
         }
     }
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
     return {
-        status : "ok",
-        data : products
+        status: "ok",
+        data: res
     }
 }
 
 async function createProduct(product: CreateProduct): Promise<IOk | IError> {
-    const createdProduct = await productRepository.createProduct(product)
-    if (!createdProduct) {
+    const res = await productRepository.createProduct(product)
+    if (!res) {
         return {
-            status : "error",
-            message : "Maybe created"
+            status: "error",
+            message: "Occurred error during product creation"
         }
     }
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
     return {
-        status : "ok",
-        message : "Successfuly created product"
+        status: "ok",
+        message: "Successfully created product"
     }
 }
 
+
 export = {
-    getProductById, 
+    getProductById,
     getAllProducts,
     createProduct,
     // getAllCategories,
