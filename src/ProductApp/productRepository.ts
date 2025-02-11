@@ -1,38 +1,60 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
+import { IProductOk } from "./types"
+import { IError } from "../types/types"
+import { getErrorMessage } from "../tools/getErrorMessage"
 
 
 
-async function getProductById(id: number){
-    const product = await client.product.findUnique({
-        where: {
-            id: id
+async function getProductById(id: number) {
+    try{ 
+        const product = await client.product.findUnique({
+            where: {
+                id: id
+            }
+        })
+        return product 
+    }catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError){
+            const errorMessage = getErrorMessage(err.code)
+            console.log(errorMessage)
+            return errorMessage
         }
-    })
-    return product
+        console.log(err)
+        return "Unexpected error"
+    }
 }
 
 
 
-async function getAllProducts(max?: number, category?: string) {
+async function getAllProducts() {
     try {
-        return await client.product.findMany({ take: max, where: { Category: { name: category } } })
+        return await client.product.findMany()
     } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-
-            }
+            const errorMessage = getErrorMessage(err.code)
+            console.log(errorMessage)
+            return errorMessage
         }
+        console.log(err)
+        return "Unexpected error"
     }
 }
 
 
 
 async function createProduct(data: Prisma.ProductUncheckedCreateInput){
-    return await client.product.create({ data })
+    try{
+        return await client.product.create({ data })
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError){
+            const errorMessage = getErrorMessage(err.code)
+            console.log(errorMessage)
+            return errorMessage
+        }
+        console.log(err)
+        return "Unexpected error"
+    }
 } 
 
 

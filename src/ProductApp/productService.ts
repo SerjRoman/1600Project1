@@ -6,75 +6,51 @@
 // оно будет переиспользовать все ту же логику
 
 import productRepository from "./productRepository"
+import { CreateProduct, Product} from "./types"
+import { IOkWithData ,IError, IOk} from "../types/types"
 
 
-const products:{
-            id:Number,
-            name:string,
-            img:string,
-            description:string}[] = [
-    {
-        id: 1,
-        name: 'Mila',
-        img: 'https://sputnik.kz/img/1024/24/10242489_147:82:1498:1568_1920x0_80_0_0_149c713da4cffa1fb7bee655c2484b24.jpg',
-        description: 'For sale, cheap, 175 cm'
-    },
-    {
-        id: 2,
-        name: 'Yarik Tek',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Bundesarchiv_Bild_101I-299-1805-16,_Nordfrankreich,_Panzer_VI_%28Tiger_I%29_cropped.jpg',
-        description: 'For sale, expensive, 182 cm'
-    },
-    {
-        id: 3,
-        name: 'Nikita',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZvViAs8p5cJ_SnrYg_yNrycXq1CGlXNDVlA&s',
-        description: 'Not for sale, priceless, one meter with a cap'
-    },
-]
-
-function getProductById (id:number) {
-    console.log(id)
-    const context = {
-        product:products[id-1],
+async function getProductById(id:number): Promise<IOkWithData<Product> | IError> {
+    const res = await productRepository.getProductById(id)
+    if (res === null) {
+        return {
+            status : "error",
+            message : "Product is not found"
+        }
     }
-    return context
-}
-async function getAllProducts (max?: number, category?: string) {
-    // if (!max) {
-    //     max = products.length
-    // }
-    const context = {
-        products: await productRepository.getAllProducts()
+    // Скажите как его зовут type.. 
+    if (typeof(res)  === "string") {
+        return {status: "error", message: res}
     }
-    return context
+    return {
+        status : "ok",
+        data : res
+    }
 }
 
-function createProduct(product:{ id:number,
-    name: string,
-    img: string,
-    description: string,
-    categoryId: number,
-    userId: number
-}) {;
-    productRepository.createProduct(product)
-    return "Hello woda"
+async function getAllProducts(): Promise<IOkWithData<Product[]> | IError>{
+    const res = await productRepository.getAllProducts()
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
+    }
+    return {
+        status : "ok",
+        data : res
+    }
 }
 
-// async function getAllCategories (max?: number, category?: string) {
-//     const context = {
-//         categories: await productRepository.getAllCategories()
-//     }
-//     return context
-// }
+async function createProduct(product: CreateProduct): Promise<IOk | IError> {
+    const res = await productRepository.createProduct(product)
 
-// async function createCategory (category:{ id:number,
-//     name: string,
-//     description: string,
-//     img: string
-// }) {
-    
-// }
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
+    }
+
+    return {
+        status : "ok",
+        message : "Successfuly created product"
+    }
+}
 
 export = {
     getProductById, 

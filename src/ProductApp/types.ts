@@ -1,16 +1,4 @@
-interface Product{
-    id: string
-    name:string
-    img:string
-    description:string
-}
-interface IProductOk{
-    status: "ok",
-    product: Product
-    
-}
+import { Prisma } from "@prisma/client"
 
-interface IProductError{
-    status:"error",
-    message: string
-}
+export type Product = Prisma.ProductGetPayload<{}>
+export type CreateProduct = Prisma.ProductUncheckedCreateInput
