@@ -1,27 +1,5 @@
 import userRepository from "./userRepository"
 
-interface IAuthOk{
-    status: "ok",
-    user: {
-        id: number,
-        username: string,
-        email: string,
-        password: string,
-    }
-}
-
-interface IAuthError{
-    status:"error",
-    message: string,
-}
-
-interface IUserData{
-    username: string,
-    email: string,
-    password: string
-}
-
-
 
 
 async function authLogin(password:string, email: string): Promise<IAuthOk | IAuthError> {
