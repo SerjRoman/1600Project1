@@ -1,6 +1,23 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 
+
+function getErrorMessage(errorCode : string): string{
+    if (errorCode === "P2002"){
+        return "Given non unique value"
+    }else if (errorCode === "P2003"){
+        return 'Field is not found'
+    }else if (errorCode === "P2007"){
+        return 'Data validation error'
+    }else if (errorCode === "P2014"){
+        return 'Error in relations'
+    }
+    return "Error code is undefined " + errorCode
+    
+}
+
+
+
 async function createCategory(data: Prisma.CategoryCreateInput){
     
     try {
@@ -8,24 +25,15 @@ async function createCategory(data: Prisma.CategoryCreateInput){
             data: data
         })
         return category
-    } catch(err) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
+    } catch (err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError){
+                const errorMessage = getErrorMessage(err.code)
+                console.log(errorMessage)
+                return errorMessage
             }
-    }
-    
-}}
+            console.log(err)
+            return "Unexpected error"
+        }}
     
 
 
@@ -37,45 +45,29 @@ async function getCategoryById(id: number){
             }
         })
         return category
-    } catch(err) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
+    } catch (err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError){
+                const errorMessage = getErrorMessage(err.code)
+                console.log(errorMessage)
+                return errorMessage
             }
+            console.log(err)
+            return "Unexpected error"
         }
-    }
 }
 async function getAllCategories(){
     try {
         const categories = await client.category.findMany()
         return categories
-    } catch(err) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
+    } catch (err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError){
+                const errorMessage = getErrorMessage(err.code)
+                console.log(errorMessage)
+                return errorMessage
             }
-    }
-}}
+            console.log(err)
+            return "Unexpected error"
+        }}
 
 async function getCategoryWithProducts(id: number){
     try {
@@ -88,23 +80,15 @@ async function getCategoryWithProducts(id: number){
             }
         })
         return category
-    } catch(err) {
-        if (err instanceof Prisma.PrismaClientKnownRequestError){
-            if (err.code === "P2002"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2003"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2007"){
-                console.log(err.message)
-                throw err
-            } else if ( err.code === "P2014"){
-                console.log(err.message)
-                throw err
+    } catch (err) {
+            if (err instanceof Prisma.PrismaClientKnownRequestError){
+                const errorMessage = getErrorMessage(err.code)
+                console.log(errorMessage)
+                return errorMessage
             }
-    }
-}}
+            console.log(err)
+            return "Unexpected error"
+        }}
 
 
 

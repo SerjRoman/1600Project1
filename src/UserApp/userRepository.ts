@@ -2,6 +2,12 @@ import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 import { IUser } from "./utypes"
 
+
+
+
+
+
+
 function getErrorMessage(errorCode : string): string{
     if (errorCode === "P2002"){
         return "Given non unique value"
