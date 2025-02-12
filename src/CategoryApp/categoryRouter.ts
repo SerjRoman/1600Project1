@@ -6,5 +6,5 @@ const router = express.Router()
 
 router.use(authMiddleware)
 
-router.get("/create", categoryController.createCategory)
-router.get("/all", categoryController.getAllCategories)
+router.post("/create", categoryController.createCategory as any)
+router.get("/all", categoryController.getAllCategories as any)

@@ -3,43 +3,43 @@ import { Prisma } from "@prisma/client"
 import { IError, IOk ,IOkWithData} from "../types/types"
 
 export type Category = Prisma.CategoryGetPayload<{}>
+export type CreateCategory = Prisma.CategoryUncheckedCreateInput
 
 
 
 
-
-async function getAllCategories(): Promise<ICategoryOk | ICategoryError> {
+async function getAllCategories(): Promise<IOkWithData<Category[]> | IError> {
     const category = await categoryRepository.getAllCategories()
-    if (!category){
+    if (!category || typeof category === "string"){
         return{status: "error", message: "vsekapec"}
     }
     return {status:"ok", data: category}
 }
 
-async function getCategoryById(id:number): Promise<IOdinElement | ICategoryError> {
+async function getCategoryById(id:number): Promise<IOkWithData<Category> | IError> {
     const category = await categoryRepository.getCategoryById(id)
-    if (!category){
+    if (!category || typeof category === "string"){
         return{status: "error", message: "vsekapec"}
     }
-    return {status:"ok", category: category}
+    return {status:"ok", data: category}
     
 }
 
-async function createCategory(data: Category): Promise<ICategoryOk | IError> {
+async function createCategory(data: Category): Promise<IOkWithData<CreateCategory> | IError> {
     const category = await categoryRepository.createCategory(data)
-    if (!category){
+    if (!category || typeof category === "string"){
         return{status: "error", message: "vsekapec"}
     }
-    return {status:"ok", category: category}
+    return {status:"ok", data: category}
 }
 
-async function getCategoryWithProducts(id: number): Promise<ICategoryOk | IError> {
+async function getCategoryWithProducts(id: number): Promise<IOkWithData<Category> | IError> {
     const category = await categoryRepository.getCategoryWithProducts(id)
-    if (!category){
+    if (!category || typeof category === "string"){
         return{status: "error", message: "vsekapec"}
     }
-    return {status:"ok", category: category}
-}
+    return {status:"ok", data: category}
+}   
 
 const categoryService = {
     getAllCategories,

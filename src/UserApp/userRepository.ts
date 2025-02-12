@@ -1,21 +1,8 @@
 import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 import { IUser } from "./utypes"
+import { getErrorMessage } from "../tools/getErrorMessage"
 
-
-
-
-
-
-
-function getErrorMessage(errorCode : string): string{
-    if (errorCode === "P2002"){
-        return "Given non unique value"
-    }else if (errorCode === "P2003"){
-        return 'Field is not found'
-    }
-    return "Error code is undefined " + errorCode
-}
 
 async function findUserByEmail(email: string) : Promise<IUser | string | null>{
     try {
