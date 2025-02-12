@@ -2,6 +2,7 @@ import { client } from "../client/prismaClient"
 import { Prisma } from "@prisma/client"
 import { IProductOk } from "./types"
 import { IError } from "../types/types"
+import { getErrorMessage } from "../tools/getErrorMessage"
 
 
 
@@ -20,22 +21,11 @@ async function getProductById(id: number) {
             return errorMessage
         }
         console.log(err)
-        return "Unexpected error"}
+        return "Unexpected error"
+    }
 }
 
-function getErrorMessage(errorCode : string): string{
-    if (errorCode === "P2002"){
-        return "Given non unique value"
-    }else if (errorCode === "P2003"){
-        return 'Field is not found'
-    }else if (errorCode === "P2007"){
-        return 'Data validation error'
-    }else if (errorCode === "P2014"){
-        return 'Error in relations'
-    }
-    return "Error code is undefined " + errorCode
-    
-}
+
 
 async function getAllProducts() {
     try {
@@ -63,7 +53,8 @@ async function createProduct(data: Prisma.ProductUncheckedCreateInput){
             return errorMessage
         }
         console.log(err)
-        return "Unexpected error"}
+        return "Unexpected error"
+    }
 } 
 
 

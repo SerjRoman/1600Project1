@@ -5,21 +5,21 @@
 // Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
 // оно будет переиспользовать все ту же логику
 
-import { IError, IOk } from "../types/types"
 import productRepository from "./productRepository"
-import { CreateProduct, IProductOk, IProductsOk } from "./types"
+import { CreateProduct, Product} from "./types"
+import { IOkWithData ,IError, IOk} from "../types/types"
 
 
-async function getProductById(id:number): Promise<IProductOk | IError> {
+async function getProductById(id:number): Promise<IOkWithData<Product> | IError> {
     const res = await productRepository.getProductById(id)
-    if (!res) {
+    if (res === null) {
         return {
             status : "error",
             message : "Product is not found"
         }
     }
     // Скажите как его зовут type.. 
-    if (typeof res === "string") {
+    if (typeof(res)  === "string") {
         return {status: "error", message: res}
     }
     return {
@@ -28,28 +28,24 @@ async function getProductById(id:number): Promise<IProductOk | IError> {
     }
 }
 
-async function getAllProducts(): Promise<IProductsOk | IError>{
-    const products = await productRepository.getAllProducts()
-    if (!products || typeof products === "string") {
-        return {
-            status : "error",
-            message : "Occured error during getting all products"
-        }
+async function getAllProducts(): Promise<IOkWithData<Product[]> | IError>{
+    const res = await productRepository.getAllProducts()
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
     }
     return {
         status : "ok",
-        data : products
+        data : res
     }
 }
 
 async function createProduct(product: CreateProduct): Promise<IOk | IError> {
-    const createdProduct = await productRepository.createProduct(product)
-    if (!createdProduct) {
-        return {
-            status : "error",
-            message : "Maybe created"
-        }
+    const res = await productRepository.createProduct(product)
+
+    if (typeof(res) === "string"){
+        return {status: "error", message: res}
     }
+
     return {
         status : "ok",
         message : "Successfuly created product"
