@@ -7,7 +7,7 @@
 
 import productRepository from "./productRepository"
 import { CreateProduct, Product} from "./types"
-import { IOkWithData ,IError, IOk} from "../types/types"
+import { IOkWithData ,IError} from "../types/types"
 
 
 async function getProductById(id:number): Promise<IOkWithData<Product> | IError> {
@@ -39,7 +39,7 @@ async function getAllProducts(): Promise<IOkWithData<Product[]> | IError>{
     }
 }
 
-async function createProduct(product: CreateProduct): Promise<IOk | IError> {
+async function createProduct(product: CreateProduct): Promise<IOkWithData<CreateProduct | string> | IError> {
     const res = await productRepository.createProduct(product)
 
     if (typeof(res) === "string"){
@@ -48,7 +48,7 @@ async function createProduct(product: CreateProduct): Promise<IOk | IError> {
 
     return {
         status : "ok",
-        message : "Successfuly created product"
+        data: "Successfuly created product"
     }
 }
 

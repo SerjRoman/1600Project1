@@ -1,8 +1,11 @@
 import userRepository from "./userRepository"
-import { IError } from "../types/types"
-import { IAuthOk,IUser,IUserData } from "./utypes"
+import { IError,IOkWithData } from "../types/types"
+import { UserData } from "./utypes"
 
-async function authLogin(email:string , password: string): Promise<IAuthOk | IError> {
+
+
+
+async function authLogin(email:string , password: string): Promise<IOkWithData<UserData> | IError> {
     const user = await userRepository.findUserByEmail(email)
 
     if (!user || typeof user === "string") {
@@ -12,12 +15,12 @@ async function authLogin(email:string , password: string): Promise<IAuthOk | IEr
         return {status:"error", message: "Passwords are not similar"}
     }
 
-    return {status : "ok" , user: user}
+    return {status : "ok" , data: user}
 }
 
 // App -> Router -> Controller -> Service -> Repository
 
-async function authRegistration(userData: IUserData): Promise<IAuthOk | IError> {
+async function authRegistration(userData: UserData): Promise<IOkWithData<UserData> | IError> {
     const user = await userRepository.findUserByEmail(userData.email);
     if (typeof user === "string") {
         return { status: "error", message: user }
@@ -29,7 +32,7 @@ async function authRegistration(userData: IUserData): Promise<IAuthOk | IError> 
     if (typeof newUser === "string") {
         return { status: "error", message: newUser }
     }
-    return { status: "ok", user: newUser }
+    return { status: "ok", data: newUser }
 }
 
 const userService = {

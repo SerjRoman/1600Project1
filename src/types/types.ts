@@ -11,4 +11,5 @@ export interface IOk {
 export interface IOkWithData <T>{
     status: "ok"
     data: T
+    message?: string // я прост хз там контроллер жадовался на месседж 
 }

@@ -2,7 +2,7 @@ import {Request,Response} from "express"
 import userService from "./userService"
 import { sign } from "jsonwebtoken"
 import { SECRET_KEY } from "../config/token"
-import { IUserData  } from "./utypes"
+import { UserData  } from "./utypes"
 
 
 function loginUser(req:Request,res:Response){
@@ -16,7 +16,7 @@ async function authUser(req:Request, res:Response){
     if (user.status == "error") {
         res.send(user.message)
     } else if (user.status == "ok") {
-        const token = sign(user.user, SECRET_KEY, {expiresIn : "1h"})
+        const token = sign(user.data, SECRET_KEY, {expiresIn : "1h"})
         res.cookie("token", token)
         res.sendStatus(200)
     }
@@ -27,12 +27,12 @@ function registerUser(req:Request, res:Response){
 }
 
 async function authRegisterUser(req:Request, res:Response){
-    const data = req.body as IUserData 
+    const data = req.body as UserData 
     const register = await userService.authRegistration(data)
     if (register.status == "error"){
         res.send(register.message)
     } else if (register.status == "ok"){
-        const token = sign(register.user, SECRET_KEY, {expiresIn : "1h"})
+        const token = sign(register.data, SECRET_KEY, {expiresIn : "1h"})
         res.cookie("token", token)
         res.sendStatus(200)
     }
