@@ -1,21 +1,29 @@
-import express,{Express, Request, Response} from 'express'
-import categoryService = require('./categoryService')
+import express, { Express, Request, Response } from 'express'
+import categoryService from "./categoryService"
 
-async function getAllCategories (req: Request, res : Response) {
-    const max = req.query.max ? +req.query.max : undefined
-    const context = await categoryService.getAllCategories(max)
-    
-    res.render("categories", context)
+async function getAllCategories(req: Request, res: Response) {
+    const context = await categoryService.getAllCategories();
+
+    if (context.status === "error") {
+        res.render("error", { message: context.message });
+        return;
+    }
+
+    res.render("categories", context);
 }
 
-async function createCategory(req: Request, res : Response) {
-    const category = req.body.category
-    const msg = categoryService.createCategory(category)
-    res.send(msg)
+async function createCategoryPost(req: Request, res: Response) {
+    const category = req.body.category;
+    const result = await categoryService.createCategory(category);
+    res.json({
+        message: result.message,
+        status: result.status,
+    });
 }
+
 
 const categoryController = {
-    createCategory,
+    createCategory: createCategoryPost,
     getAllCategories
 }
 

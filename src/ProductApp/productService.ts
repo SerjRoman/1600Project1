@@ -5,56 +5,66 @@
 // Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
 // оно будет переиспользовать все ту же логику
 
+import { Product } from "@prisma/client"
 import productRepository from "./productRepository"
-import { CreateProduct, Product} from "./types"
-import { IOkWithData ,IError, IOk} from "../types/types"
+import { CreateProduct, Productt } from "./types"
+import { IOkWithData ,IError, IOk } from "../types/types"
 
 
-async function getProductById(id:number): Promise<IOkWithData<Product> | IError> {
+async function getProductById(id: number): Promise<IOkWithData<Productt> | IError> {
     const res = await productRepository.getProductById(id)
     if (res === null) {
         return {
-            status : "error",
-            message : "Product is not found"
+            status: "error",
+            message: "Product is not product"
         }
     }
-    // Скажите как его зовут type.. 
-    if (typeof(res)  === "string") {
-        return {status: "error", message: res}
+    if (typeof res === "string") {
+        return { status: "error", message: res }
     }
     return {
-        status : "ok",
-        data : res
+        status: "ok",
+        data: res
     }
 }
 
-async function getAllProducts(): Promise<IOkWithData<Product[]> | IError>{
+async function getAllProducts(): Promise<IOkWithData<Productt[]> | IError> {
     const res = await productRepository.getAllProducts()
-    if (typeof(res) === "string"){
-        return {status: "error", message: res}
+    if (!res) {
+        return {
+            status: "error",
+            message: "not products"
+        }
+    }
+    if (typeof res === "string") {
+        return { status: "error", message: res }
     }
     return {
-        status : "ok",
-        data : res
+        status: "ok",
+        data: res
     }
 }
 
 async function createProduct(product: CreateProduct): Promise<IOk | IError> {
     const res = await productRepository.createProduct(product)
-
-    if (typeof(res) === "string"){
-        return {status: "error", message: res}
+    if (!res) {
+        return {
+            status: "error",
+            message: "product not created "
+        }
     }
-
+    if (typeof res === "string") {
+        return { status: "error", message: res }
+    }
     return {
-        status : "ok",
-        message : "Successfuly created product"
+        status: "ok",
+        message: "Success, product is product"
     }
 }
 
+
 export = {
-    getProductById, 
+    getProductById,
     getAllProducts,
-    createProduct,
-    // getAllCategories,
+    createProduct
 }
