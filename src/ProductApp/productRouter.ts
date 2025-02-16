@@ -15,4 +15,6 @@ router.get("/:id", productControllers.getProductById)
 router.get("/create", productControllers.createProduct)
 
 
+
+
 export default router
