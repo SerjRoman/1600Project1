@@ -13,7 +13,7 @@ import { IOkWithData ,IError, IOk } from "../types/types"
 
 async function getProductById(id: number): Promise<IOkWithData<Productt> | IError> {
     const res = await productRepository.getProductById(id)
-    if (!res) {
+    if (res === null) {
         return {
             status: "error",
             message: "Product is not product"

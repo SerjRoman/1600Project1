@@ -1,4 +1,4 @@
-// app -> router -> controller -> service 
+// app -> router -> controller -> service
 
 /* 
 Приложение ->
