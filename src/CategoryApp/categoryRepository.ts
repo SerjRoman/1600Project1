@@ -10,20 +10,12 @@ async function createCategory(data: Prisma.CategoryCreateInput) {
         return category;
     } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
-            if (err.code === "P2002") {
-                console.log(err.message);
-                throw err;
-            } else if (err.code === "P2003") {
-                console.log(err.message);
-                throw err;
-            } else if (err.code === "P2007") {
-                console.log(err.message);
-                throw err;
-            } else if (err.code === "P2014") {
-                console.log(err.message);
-                throw err;
-            }
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
         }
+        console.log(err);
+        return "Unexpected error";
     }
 }
 
