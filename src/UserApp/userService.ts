@@ -1,9 +1,9 @@
 import userRepository from "./userRepository"
-import { IAuthOk, IUserCreate } from "./types"
-import { IError } from "../types/types"
+import { IUser, IUserCreate } from "./types"
+import { IError, IObjectOK } from "../types/types"
 
 
-async function authLogin(password: string, email: string): Promise<IAuthOk | IError> {
+async function authLogin(password: string, email: string): Promise<IObjectOK<IUser> | IError> {
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) {
@@ -17,10 +17,10 @@ async function authLogin(password: string, email: string): Promise<IAuthOk | IEr
     }
 
 
-    return { status: "ok", user: user };
+    return { status: "ok", data: user };
 }
 
-async function authRegistration(userData: IUserCreate): Promise<IAuthOk | IError> {
+async function authRegistration(userData: IUserCreate): Promise<IObjectOK<IUser> | IError> {
     const user = await userRepository.findUserByEmail(userData.email);
 
     if (!user) {
@@ -39,7 +39,7 @@ async function authRegistration(userData: IUserCreate): Promise<IAuthOk | IError
     if (!newUser) {
         return { status: "error", message: "User wasn't created successfully" };
     }
-    return { status: "ok", user: newUser };
+    return { status: "ok", data: newUser };
 }
 
 

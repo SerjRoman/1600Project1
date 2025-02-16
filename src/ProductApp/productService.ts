@@ -6,12 +6,12 @@
 // оно будет переиспользовать все ту же логику
 
 import { Product } from "@prisma/client"
-import { IError, IOk } from "../types/types"
+import { IError, IObjectOK, IObjectsOK, IOk } from "../types/types"
 import productRepository from "./productRepository"
-import { CreateProduct, IProductOk, IProductsOk } from "./types"
+import { ICreateProduct, IProduct } from "./types"
 
 
-async function getProductById(id: number): Promise<IProductOk | IError> {
+async function getProductById(id: number): Promise<IObjectOK<IProduct> | IError> {
     const res = await productRepository.getProductById(id)
     if (!res) {
         return {
@@ -28,7 +28,7 @@ async function getProductById(id: number): Promise<IProductOk | IError> {
     }
 }
 
-async function getAllProducts(): Promise<IProductsOk | IError> {
+async function getAllProducts(): Promise<IObjectsOK<IProduct> | IError> {
     const res = await productRepository.getAllProducts()
     if (!res) {
         return {
@@ -45,7 +45,7 @@ async function getAllProducts(): Promise<IProductsOk | IError> {
     }
 }
 
-async function createProduct(product: CreateProduct): Promise<IOk | IError> {
+async function createProduct(product: ICreateProduct): Promise<IOk | IError> {
     const res = await productRepository.createProduct(product)
     if (!res) {
         return {

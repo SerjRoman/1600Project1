@@ -1,8 +1,8 @@
 import categoryRepository from "./categoryRepository"
-import { ICategoryOk, ICategoryScalar, ICategoryCreate } from "./types"
-import { IError, IOk } from "../types/types"
+import { ICategory, ICategoryCreate } from "./types"
+import { IError, IObjectOK, IObjectsOK, IOk } from "../types/types"
 
-async function getAllCategories(): Promise<ICategoryOk | IError> {
+async function getAllCategories(): Promise<IObjectsOK<ICategory> | IError> {
     const res = await categoryRepository.getAllCategories()
     if (!res) {
         return { status: "error", message: "vsekapec" }
@@ -10,10 +10,10 @@ async function getAllCategories(): Promise<ICategoryOk | IError> {
     if (typeof res === "string") {
         return { status: "error", message: res }
     }
-    return { status: "ok", category: res }
+    return { status: "ok", data: res }
 }
 
-async function getCategoryById(id: number): Promise<ICategoryScalar | IError> {
+async function getCategoryById(id: number): Promise<IObjectOK<ICategory> | IError> {
     const res = await categoryRepository.getCategoryById(id)
     if (!res) {
         return { status: "error", message: "vsekapec" }
@@ -21,7 +21,7 @@ async function getCategoryById(id: number): Promise<ICategoryScalar | IError> {
     if (typeof res === "string") {
         return { status: "error", message: res }
     }
-    return { status: "ok", category: res }
+    return { status: "ok", data: res }
 }
 
 async function createCategory(data: ICategoryCreate): Promise<IOk | IError> {
@@ -35,7 +35,7 @@ async function createCategory(data: ICategoryCreate): Promise<IOk | IError> {
     return { status: "ok", message: "category succesfully created" }
 }
 
-async function getCategoryWithProducts(id: number): Promise<ICategoryScalar | IError> {
+async function getCategoryWithProducts(id: number): Promise<IObjectOK<ICategory> | IError> {
     const res = await categoryRepository.getCategoryWithProducts(id)
     if (!res) {
         return { status: "error", message: "vsekapec" }
@@ -43,7 +43,7 @@ async function getCategoryWithProducts(id: number): Promise<ICategoryScalar | IE
     if (typeof res === "string") {
         return { status: "error", message: res }
     }
-    return { status: "ok", category: res }
+    return { status: "ok", data: res }
 }
 
 
