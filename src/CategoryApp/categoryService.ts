@@ -1,5 +1,5 @@
 import categoryRepository from "./categoryRepository"
-import { Category, CategoryCreate } from "./types"
+import { Category, CategoryCreate, CategoryWithProducts } from "./types"
 import { IOkWithData ,IError, IOk } from "../types/types"
 
 async function getAllCategories(): Promise<IOkWithData<Category[]> | IError> {
@@ -35,7 +35,7 @@ async function createCategory(data: CategoryCreate): Promise<IOk | IError> {
     return { status: "ok", message: "category succesfully created" }
 }
 
-async function getCategoryWithProducts(id: number): Promise<IOkWithData<Category[]> | IError> {
+async function getCategoryWithProducts(id: number): Promise<IOkWithData<CategoryWithProducts> | IError> {
     const res = await categoryRepository.getCategoryWithProducts(id)
     if (!res) {
         return { status: "error", message: "vsekapec" }
