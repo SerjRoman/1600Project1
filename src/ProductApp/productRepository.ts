@@ -9,6 +9,9 @@ async function getProductById(id: number) {
         const product = await client.product.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                Category: true
             }
         })
         return product
@@ -25,7 +28,11 @@ async function getProductById(id: number) {
 
 async function getAllProducts() {
     try {
-        return await client.product.findMany()
+        return await client.product.findMany({
+            include: {
+                Category: true
+            }
+        })
     } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
             const errorMessage = getErrorMessage(err.code)

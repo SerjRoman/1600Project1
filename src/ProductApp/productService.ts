@@ -5,13 +5,12 @@
 // Логика в сервисе ни от чего не зависит и к примеру если вы захотите создать вдобавок к вебсайту десктоп приложение,
 // оно будет переиспользовать все ту же логику
 
-import { Product } from "@prisma/client"
 import productRepository from "./productRepository"
-import { CreateProduct, Productt } from "./types"
+import { CreateProduct, ProductWithCategory } from "./types"
 import { IOkWithData ,IError, IOk } from "../types/types"
 
 
-async function getProductById(id: number): Promise<IOkWithData<Productt> | IError> {
+async function getProductById(id: number): Promise<IOkWithData<ProductWithCategory> | IError> {
     const res = await productRepository.getProductById(id)
     if (res === null) {
         return {
@@ -28,7 +27,7 @@ async function getProductById(id: number): Promise<IOkWithData<Productt> | IErro
     }
 }
 
-async function getAllProducts(): Promise<IOkWithData<Productt[]> | IError> {
+async function getAllProducts(): Promise<IOkWithData<ProductWithCategory[]> | IError> {
     const res = await productRepository.getAllProducts()
     if (!res) {
         return {

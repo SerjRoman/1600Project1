@@ -19,6 +19,18 @@ async function authUser(req: Request, res: Response) {
         res.sendStatus(200)
     }
 }
+// АВТОРИЗАЦИЯ
+// Client -> POST -> Express
+// Express -> проверяет данные/собирает ответ/отправляет ответ/создает токен
+// Express -> {token:'sfsdfdbdh824utgrbtior'} -> Client сохраняет у себя токен
+
+
+
+// Client использует токен, для получения данных о себе
+// Client - отправляет запрос на express с токеном -> Express получает ID клиента из токена и выдает данные {name: string, email: string, avatar, ...}
+// /api/user/me
+
+
 
 function registerUser(req: Request, res: Response) {
     res.render("registration")
