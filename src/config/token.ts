@@ -1,3 +1,8 @@
+import dotenv from "dotenv"
 
-export const SECRET_KEY = "Mila" // перенести в .env файл !!!
+
+dotenv.config()
+
+
+export const SECRET_KEY = process.env.SECRET_KEY ? process.env.SECRET_KEY : "NieMila" 
 

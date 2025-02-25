@@ -26,7 +26,7 @@ async function getProductById(id: number): Promise<IOkWithData<ProductWithCatego
         data: res
     }
 }
-
+// тут был ярослав самчук хехехе
 async function getAllProducts(): Promise<IOkWithData<ProductWithCategory[]> | IError> {
     const res = await productRepository.getAllProducts()
     if (!res) {

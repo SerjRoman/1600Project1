@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import productRouter from "./ProductApp/productRouter"
 import userRouter from "./UserApp/userRouter";
+import userApiRouter from "./UserApp/userRouterApi";
 import productRouterApi from "./ProductApp/productRouterApi"
 import categoryRouterApi from "./CategoryApp/categoryRouterApi"
 import cors from "cors"
@@ -34,6 +35,7 @@ app.set("views", path.resolve(__dirname, "./templates"))
 app.use("/static/", express.static(path.resolve(__dirname, "./public")))
 app.use("/api/product/", productRouterApi)
 app.use("/api/category/", categoryRouterApi)
+app.use("/api/profile/", userApiRouter)
 app.use("/product/", productRouter)
 app.use("/", userRouter)
 

@@ -10,12 +10,11 @@ function loginUser(req: Request, res: Response) {
 async function authUser(req: Request, res: Response) {
     console.log(req.body)
     const data = req.body
-    const user = await userService.authLogin(data.password, data.email)
-    if (user.status == "error") {
-        res.send(user.message)
-    } else if (user.status == "ok") {
-        const token = sign(user, SECRET_KEY, { expiresIn: "1h" })
-        res.cookie("token", token)
+    const result = await userService.authLogin(data.password, data.email)
+    if (result.status == "error") {
+        res.send(result.message)
+    } else if (result.status == "ok") {
+        res.cookie("token", result.data)
         res.sendStatus(200)
     }
 }
@@ -23,6 +22,11 @@ async function authUser(req: Request, res: Response) {
 // Client -> POST -> Express
 // Express -> проверяет данные/собирает ответ/отправляет ответ/создает токен
 // Express -> {token:'sfsdfdbdh824utgrbtior'} -> Client сохраняет у себя токен
+
+// GET headers: {Authorization: "Baerer TOKEN"}
+// "OAuth" -> 401
+// "" -> 401
+// TOKEN ne valid -> 401
 
 
 
@@ -37,12 +41,11 @@ function registerUser(req: Request, res: Response) {
 }
 
 async function authRegisterUser(req: Request, res: Response) {
-    const register = await userService.authRegistration(req.body)
-    if (register.status == "error") {
-        res.send(register.message)
-    } else if (register.status == "ok") {
-        const token = sign(register, SECRET_KEY, { expiresIn: "1h" })
-        res.cookie("token", token)
+    const result = await userService.authRegistration(req.body)
+    if (result.status == "error") {
+        res.send(result.message)
+    } else if (result.status == "ok") {
+        res.cookie("token", result.data)
         res.sendStatus(200)
     }
 }
