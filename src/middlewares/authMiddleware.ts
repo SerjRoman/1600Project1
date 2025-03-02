@@ -7,8 +7,8 @@ interface IToken {
     username: string,
     email: string,
     password: string,
-    iat: number,
-    exp: number,
+    iat: number, // issued At - когда был токен создан
+    exp: number, // expires At - когда токен заканчивается
 }
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {

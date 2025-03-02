@@ -12,3 +12,6 @@ export interface IOkWithData <T>{
     status: "ok"
     data: T
 }
+
+
+

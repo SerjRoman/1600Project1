@@ -16,6 +16,10 @@ async function authLogin(password: string, email: string): Promise<IOkWithData<s
     }
     // user.password = $2y$10$VO4gSEnm72OgK8vKogYD0eYY7CkBfyNyw3rD/Mtv8HBIVhZdoibMO
     // password = "12345"
+    // $2y - SHA256
+    // $10 - round - cost factor
+    // $VO4gSEnm72OgK8vKogYD0eYY7CkBfyNyw3rD - salt
+    // Mtv8HBIVhZdoibMO - data
     const isMatch = await compare(password, user.password)
 
     if (!isMatch) {
@@ -27,10 +31,24 @@ async function authLogin(password: string, email: string): Promise<IOkWithData<s
     return { status: "ok", data: token };
 }
 
+
+async function getUserById (id : number):Promise <IOkWithData<User> | IError>{
+    const user = await userRepository.findUserById(id)
+    if (!user){
+        return { status: "error", message: "user not found" };
+    }
+    if (typeof user === "string") {
+        return { status: "error", message: user };
+    }
+    return {status : "ok" , data: user}
+}
+
+
+
 async function authRegistration(userData: UserCreate): Promise<IOkWithData<string> | IError> {
     const user = await userRepository.findUserByEmail(userData.email);
         
-    if (!user) {
+    if (user) {
         return { status: "error", message: "user not users" };
     }
 
@@ -62,7 +80,7 @@ async function authRegistration(userData: UserCreate): Promise<IOkWithData<strin
     }
 
     if (!newUser) {
-        return { status: "error", message: "User is user" };
+        return { status: "error", message: "User is not user" };
     }
 
     const token = sign(String(newUser.id), SECRET_KEY, { expiresIn: "1d" })
@@ -72,7 +90,8 @@ async function authRegistration(userData: UserCreate): Promise<IOkWithData<strin
 
 const userService = {
     authLogin: authLogin,
-    authRegistration: authRegistration
+    authRegistration: authRegistration,
+    getUserById :getUserById 
 }
 
 export default userService

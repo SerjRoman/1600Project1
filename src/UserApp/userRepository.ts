@@ -37,10 +37,35 @@ async function createUser(data: Prisma.UserCreateInput) {
     }
 }
 
+async function findUserById (id : number) {
+    try {
+        const user = await client.user.findUnique({
+            where:{
+                id :id
+            },
+            select: {
+                username: true, 
+                email: true, 
+                id: true,
+                role: true
+            },
+        });
+        return user;
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
+            const errorMessage = getErrorMessage(err.code);
+            console.log(errorMessage);
+            return errorMessage;
+        }
+        console.log(err);
+        return "error";
+    }
+}
 
 const userRepository = {
     findUserByEmail,
-    createUser
+    createUser, 
+    findUserById
 }
 
 export default userRepository
