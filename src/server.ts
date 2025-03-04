@@ -33,9 +33,10 @@ app.set("views", path.resolve(__dirname, "./templates"))
 // Настраиваем раздачу статических файлов по пути /static/,
 // указывая директорию в которой лежат статик файлы (public)
 app.use("/static/", express.static(path.resolve(__dirname, "./public")))
+
 app.use("/api/product/", productRouterApi)
 app.use("/api/category/", categoryRouterApi)
-app.use("/api/profile/", userApiRouter)
+app.use("/api/user/", userApiRouter)
 app.use("/product/", productRouter)
 app.use("/", userRouter)
 

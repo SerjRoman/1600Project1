@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client"
 
 async function findUserByEmail(email: string) {
     try {
+        console.log(email)
         const user = await client.user.findUnique({
             where: {
                 email: email
@@ -22,6 +23,7 @@ async function findUserByEmail(email: string) {
 
 async function createUser(data: Prisma.UserCreateInput) {
     try {
+        console.log(data)
         const user = await client.user.create({
             data: data
         });
