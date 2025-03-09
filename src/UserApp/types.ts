@@ -5,7 +5,8 @@ export type User = Prisma.UserGetPayload<{
         username: true, 
         email: true, 
         id: true,
-        role: true
+        role: true,
+        image: true
     }
 }>
 export type UserCreate = Prisma.UserUncheckedCreateInput

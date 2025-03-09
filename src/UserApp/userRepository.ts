@@ -49,7 +49,8 @@ async function findUserById (id : number) {
                 username: true, 
                 email: true, 
                 id: true,
-                role: true
+                role: true,
+                image: true
             },
         });
         return user;
